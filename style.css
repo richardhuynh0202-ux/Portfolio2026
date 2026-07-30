@@ -1,0 +1,842 @@
+/* ============================================================
+   GLOBAL RESET & BASE STYLES
+   Applies to all pages in the portfolio
+============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Yantramanav', sans-serif;
+  background-color: #FAFAFC;
+  color: #000000;
+  min-height: 100vh;
+}
+
+
+/* ============================================================
+   PAGE WRAPPER
+   Full viewport height, used as positioning context
+   for the hero, footer, and bottom nav
+============================================================ */
+
+.page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FAFAFC;
+}
+
+
+/* ============================================================
+   HERO SECTION
+   Vertically and horizontally centered content block
+   Offset upward slightly to breathe above the bottom nav
+============================================================ */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 64.5px));
+
+  width: 400px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+
+/* ============================================================
+   HERO: LOGO
+============================================================ */
+
+.hero__logo {
+  width: 36px;
+  height: 49px;
+  object-fit: contain;
+  display: block;
+}
+
+
+/* ============================================================
+   HERO: IDENTITY BLOCK
+============================================================ */
+
+.hero__identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+}
+
+.hero__name {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #000000;
+}
+
+.hero__title {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+}
+
+
+/* ============================================================
+   HERO: BIO / TAGLINE
+============================================================ */
+
+.hero__bio {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  max-width: 369px;
+  width: 100%;
+}
+
+
+/* ============================================================
+   FOOTER
+   Fixed bottom-right on all pages and all screen sizes
+============================================================ */
+
+.footer {
+  position: fixed;
+  bottom: 38px;
+  right: 24px;
+  z-index: 10;
+}
+
+.footer__copyright {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: right;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+}
+
+
+/* ============================================================
+   BOTTOM NAVIGATION BAR
+   Dark pill-shaped floating nav, centered at the bottom
+   Static — no entrance animation
+============================================================ */
+
+.bottom-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+  padding: 16px 24px;
+
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+
+  background-color: #1B1B1B;
+  border-radius: 36px;
+
+  box-shadow:
+    30px 33px 18px rgba(0, 0, 0, 0.02),
+    17px 18px 15px rgba(0, 0, 0, 0.07),
+    7px 8px 11px rgba(0, 0, 0, 0.05),
+    2px 2px 6px rgba(0, 0, 0, 0.14);
+
+  max-width: calc(100vw - 48px);
+
+  /* Sits above the fade gradient */
+  z-index: 20;
+}
+
+/* ============================================================
+   BOTTOM FADE GRADIENT
+   A full-width fade from transparent to the background
+   colour, sticky to the bottom of the viewport.
+   Sits behind the nav pill but above page content.
+   Only shown on scrollable pages via .page--scrollable
+============================================================ */
+
+.bottom-fade {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  /* Tall enough to bridge from nav pill top to page content */
+  height: 120px;
+
+  /* Fade from background colour at bottom to transparent at top */
+  background: linear-gradient(
+    to top,
+    #FAFAFC 0%,
+    #FAFAFC 30%,
+    transparent 100%
+  );
+
+  /* Behind nav pill, above page content */
+  z-index: 15;
+
+  /* No pointer events — clicks pass through to content below */
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   NAV ITEMS
+============================================================ */
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  text-decoration: none;
+  color: #FFFFFF;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.nav-item:hover {
+  opacity: 0.8;
+}
+
+.nav-item--active {
+  opacity: 1;
+}
+
+.nav-item .material-icons {
+  font-size: 24px;
+}
+
+
+/* ============================================================
+   SLIDE-IN ANIMATION
+   Reusable class applied to any element that should
+   animate in from below. JS adds .is-visible to trigger it.
+============================================================ */
+
+/* Default state — hidden, shifted down 20px */
+.animate {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Triggered state — fully visible, in position */
+.animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays — applied to child elements in order */
+.animate-delay-1 { transition-delay: 0.05s; }
+.animate-delay-2 { transition-delay: 0.10s; }
+.animate-delay-3 { transition-delay: 0.15s; }
+.animate-delay-4 { transition-delay: 0.20s; }
+.animate-delay-5 { transition-delay: 0.25s; }
+.animate-delay-6 { transition-delay: 0.30s; }
+.animate-delay-7 { transition-delay: 0.35s; }
+.animate-delay-8 { transition-delay: 0.40s; }
+
+
+/* ============================================================
+   KEYFRAME: SLIDE UP
+   Used for the bottom nav on page load
+============================================================ */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+
+/* ============================================================
+   ABOUT PAGE STYLES
+============================================================ */
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 36px;
+
+  width: 500px;
+  margin: 0 auto;
+
+  padding-top: 300px;
+  padding-bottom: 120px;
+}
+
+.about__headshot {
+  width: 48px;
+  height: 48px;
+  border-radius: 400px;
+  object-fit: cover;
+  background-color: #CCCCCC;
+
+  filter:
+    drop-shadow(6px 15px 6px rgba(0, 0, 0, 0.02))
+    drop-shadow(3px 8px 5px rgba(0, 0, 0, 0.07))
+    drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.12))
+    drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.14));
+}
+
+.about__bio {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  width: 100%;
+}
+
+.about__link {
+  color: #555555;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.2s ease;
+}
+
+.about__link:hover {
+  opacity: 0.6;
+}
+
+.about-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+.about-section__label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+}
+
+.about-section__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+.experience-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.experience-item__company {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+}
+
+.experience-item__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.experience-item__role {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+}
+
+.experience-item__date {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.goal-item {
+  width: 100%;
+}
+
+.goal-item__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.goal-item__text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+}
+
+.goal-item__status {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  white-space: nowrap;
+  text-align: right;
+}
+
+
+/* ============================================================
+   RESPONSIVE: TABLET — 768px
+============================================================ */
+
+@media (max-width: 768px) {
+
+  .hero {
+    width: 100%;
+    max-width: 400px;
+    padding: 0 32px;
+    transform: translate(-50%, calc(-50% - 52px));
+  }
+
+  .about-container {
+    width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 300px;
+  }
+
+  /* Hide copyright on small screens to avoid nav overlap */
+  .footer {
+    display: none;
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE: MOBILE — 480px
+============================================================ */
+
+@media (max-width: 480px) {
+
+  .hero {
+    width: 100%;
+    padding: 0 24px;
+    transform: translate(-50%, calc(-50% - 48px));
+    gap: 32px;
+  }
+
+  .about-container {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 48px;
+    gap: 32px;
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE: SMALL MOBILE — 375px
+============================================================ */
+
+@media (max-width: 375px) {
+
+  .hero {
+    padding: 0 20px;
+    transform: translate(-50%, calc(-50% - 44px));
+    gap: 28px;
+  }
+
+  .about-container {
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 28px;
+  }
+
+  .experience-item__role,
+  .goal-item__text {
+    max-width: 60%;
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE: MINIMUM WIDTH — 320px
+============================================================ */
+
+@media (max-width: 320px) {
+
+  .hero {
+    padding: 0 16px;
+    transform: translate(-50%, calc(-50% - 40px));
+    gap: 24px;
+  }
+
+  .about-container {
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 24px;
+  }
+
+  .experience-item__company {
+    font-size: 15px;
+  }
+
+  .bottom-nav {
+    gap: 24px;
+    padding: 14px 20px;
+  }
+
+}
+
+/* ============================================================
+   WORK PAGE STYLES
+============================================================ */
+
+
+/* ============================================================
+   WORK: PAGE CONTAINER
+   Scrollable column of project cards, centered
+============================================================ */
+
+.work-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+
+  width: 550px;
+  margin: 0 auto;
+
+  padding-top: 200px;
+  padding-bottom: 140px;
+}
+
+
+/* ============================================================
+   WORK: PROJECT CARD
+   Shared styles for all project cards
+============================================================ */
+
+.work-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+
+  /* Reset link styles */
+  text-decoration: none;
+  color: inherit;
+
+  /* Establish stacking context */
+  position: relative;
+  z-index: 1;
+
+  /* Slower, luxurious transition (0.55s instead of 0.35s) */
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Subtle 3% scale on hover — gentle and controlled */
+a.work-card:hover {
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+/* Prevent zoom effect on unclickable 'Coming Soon' cards */
+.work-card--coming-soon:hover {
+  transform: scale(1);
+  z-index: 1;
+}
+
+
+/* ============================================================
+   WORK: THUMBNAIL CONTAINER
+   Rounded card with light border, centers the image
+============================================================ */
+
+.work-card__thumbnail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+  width: 100%;
+  height: 350px;
+
+  background: #FCFCFC;
+  border: 2px solid #F5F5F7;
+  border-radius: 24px;
+
+  overflow: hidden;
+}
+
+/* Project image inside thumbnail */
+.work-card__image {
+  width: 450px;
+  max-width: 100%;
+  height: 238px;
+  object-fit: cover;
+}
+
+
+/* ============================================================
+   WORK: COMING SOON OVERLAY
+   Dimmed card with a centered "Coming Soon" badge
+============================================================ */
+
+/* Dim the entire coming soon card */
+.work-card--coming-soon {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Dark overlay on top of the thumbnail */
+.work-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 250, 252, 0.7);
+  border-radius: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Badge text */
+.work-card__overlay-text {
+  font-family: 'Yantramanav', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+
+  /* Pill badge */
+  background: #FFFFFF;
+  border: 1px solid #F5F5F7;
+  border-radius: 100px;
+  padding: 6px 14px;
+
+  /* Subtle shadow so it lifts off the overlay */
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ============================================================
+   WORK: CARD INFO
+   Title and meta row below the thumbnail
+============================================================ */
+
+.work-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.work-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Project title */
+.work-card__title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  width: 100%;
+}
+
+/* Meta row — description left, company tag right */
+.work-card__meta {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+}
+
+/* Short description */
+.work-card__description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  flex: 1;
+}
+
+/* Company tag — uppercase, right-aligned */
+.work-card__company {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #555555;
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   WORK: RESPONSIVE — TABLET 768px
+============================================================ */
+
+@media (max-width: 768px) {
+
+  .work-container {
+    width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 60px;
+    gap: 48px;
+  }
+
+  .work-card__image {
+    width: 100%;
+    height: auto;
+    max-height: 238px;
+  }
+
+}
+
+
+/* ============================================================
+   WORK: RESPONSIVE — MOBILE 480px
+============================================================ */
+
+@media (max-width: 480px) {
+
+  .work-container {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 48px;
+    gap: 40px;
+  }
+
+  .work-card__thumbnail {
+    height: 240px;
+  }
+
+  .work-card__image {
+    height: 180px;
+  }
+
+}
+
+
+/* ============================================================
+   WORK: RESPONSIVE — SMALL MOBILE 375px
+============================================================ */
+
+@media (max-width: 375px) {
+
+  .work-container {
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 36px;
+  }
+
+  .work-card__thumbnail {
+    height: 220px;
+  }
+
+}
+
+
+/* ============================================================
+   WORK: RESPONSIVE — MINIMUM WIDTH 320px
+============================================================ */
+
+@media (max-width: 320px) {
+
+  .work-container {
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 32px;
+  }
+
+  .work-card__thumbnail {
+    height: 200px;
+    border-radius: 16px;
+  }
+
+  .work-card__title {
+    font-size: 15px;
+  }
+
+}
